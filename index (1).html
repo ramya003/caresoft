@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body style="background-color:#d4edda">
+    <div class="container">
+    <h1>Todo List</h1>
+    <div>Add a new todo item:
+        <form class="form-group" action="{{ url_for('add') }}" method="POST">
+            <input class="form-control" type="text" name="todoitem" style="width: 500px;">
+            <button class="btn btn-primary mt-2" type="submit">Add Item</button>
+        </form>
+    </div>
+    <div>
+        <h3>Incomplete Items</h3>
+        <ul>
+            {% for todo in incomplete %}
+            <li class="card p-2 d-inline-block w-100"><b class="p-2" style="font-size: 1.8em;">{{ todo.text }}</b>
+                <a class="float-right p-2" href="{{ url_for('complete', id=todo.id) }}">Mark As Complete</a>                                
+                <a class="float-right p-2" href="{{ url_for('delete', id=todo.id) }}">Delete</a class="float-right">
+                <button class="btn btn-link float-right" onclick="document.getElementById('{{todo.id}}').style.display='block'">edit</button>
+</li>
+<div id="{{ todo.id }}" style="display: none;">
+    <form class="form-group" action="{{ url_for('edit', id=todo.id) }}" method="POST">        
+        <input class="form-control" type="text" name="edititem" style="width: 500px;">
+        <button class="btn btn-success mt-2" type="submit">Change Text</button>
+    </form>
+</div>
+            {% endfor %}    
+        </ul>
+        <h3>Completed Items</h3>
+        <ul>
+            {% for todo in complete %}
+            <li class="card p-2 text-muted"><del>{{ todo.text }}<del><a class="float-right" href="{{ url_for('delete', id=todo.id) }}">Delete</a></li>
+
+            {% endfor %}
+        </ul>
+
+    </div>
+    </div>
+</body>
+</html>
